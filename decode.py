@@ -1,0 +1,13 @@
+import base64
+
+encoded = "WzEwOjQ4OjI0XSBLZXk6IGkKWzEwOjQ4OjI1XSBLZXk6IHMKWzEwOjQ4OjI1XSBLZXk6IEtleS5zcGFjZQpbMTA6NDg6MjVdIEtleTogcgpbMTA6NDg6MjVdIEtleTogdQpbMTA6NDg6MjVdIEtleTogbgpbMTA6NDg6MjVdIEtleTogbgpbMTA6NDg6MjVdIEtleTogaQpbMTA6NDg6MjVdIEtleTogbgpbMTA6NDg6MjZdIEtleTogZwpbMTA6NDg6MjZdIEtleTogS2V5LnNwYWNlClsxMDo0ODoyNl0gS2V5OiBzClsxMDo0ODoyNl0gS2V5OiBvClsxMDo0ODoyNl0gS2V5OiBLZXkuc3BhY2UKWzEwOjQ4OjI2XSBLZXk6IHMKWzEwOjQ4OjI2XSBLZXk6IGwKWzEwOjQ4OjI2XSBLZXk6IG8KWzEwOjQ4OjI3XSBLZXk6IHcKWzEwOjQ4OjI3XSBLZXk6IEtleS5zcGFjZQpbMTA6NDg6MjddIEtleTogZQpbMTA6NDg6MjhdIEtleTogaApbMTA6NDg6MjhdIEtleTogS2V5LmJhY2tzcGFjZQo="
+decoded_bytes = base64.b64decode(encoded)
+
+try:
+    decoded_text = decoded_bytes.decode('utf-8')
+except UnicodeDecodeError:
+    # fallback: decode with 'latin1' or ignore errors
+    decoded_text = decoded_bytes.decode('latin1')
+    # or: decoded_text = decoded_bytes.decode('utf-8', errors='ignore')
+
+print(decoded_text)

